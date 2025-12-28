@@ -2,13 +2,22 @@ pipeline {
     agent any
 
     environment {
-        JAR_DIR = 'D:\\jenkins-deploy\\demo1-app'
+        JAR_DIR = 'D:\\jenkins-deploy\\demo'
     }
 
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Change to demo1 directory') {
+            steps {
+                script {
+                    // 切换到 demo1 目录
+                    bat 'cd demo1'
+                }
             }
         }
 
@@ -22,7 +31,7 @@ pipeline {
             steps {
                 bat """
                     if not exist "${JAR_DIR}" mkdir "${JAR_DIR}"
-                    copy /Y "target\\*.jar" "${JAR_DIR}\\app.jar"
+                    copy /Y "demo1\\target\\*.jar" "${JAR_DIR}\\app.jar"
                 """
             }
         }
