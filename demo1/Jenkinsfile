@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        JAR_DIR = 'D:\\jenkins-deploy\\demo1-app'
+        JAR_DIR = 'D:\\jenkins-deploy\\demo'
     }
 
     stages {
