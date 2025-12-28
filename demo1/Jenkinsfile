@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    environment {
+        JAR_DIR = 'D:\\jenkins-deploy\\demo1-app'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Copy JAR') {
+            steps {
+                bat """
+                    if not exist "${JAR_DIR}" mkdir "${JAR_DIR}"
+                    copy /Y "target\\*.jar" "${JAR_DIR}\\app.jar"
+                """
+            }
+        }
+
+        stage('Run JAR') {
+            steps {
+                bat """
+                    start \"SpringBoot App\" java -jar "${JAR_DIR}\\app.jar"
+                """
+            }
+        }
+    }
+}
